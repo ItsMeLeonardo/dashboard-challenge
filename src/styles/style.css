@@ -161,10 +161,10 @@ body {
   background: url(../images/icon-social.svg);
 }
 
-.card[data-card='Self care'] .card__icon-back{
+.card[data-card='Self Care'] .card__icon-back{
   background: var(--soft-orange);
 }
-.card[data-card='Self care'] .card__icon {
+.card[data-card='Self Care'] .card__icon {
   background: url(../images/icon-self-care.svg);
 }
 
@@ -223,6 +223,7 @@ body {
   .main-card {
     grid-row: 1/span 3;
     justify-content: center;
+    cursor: initial;
   }
   .main-card__header {
     flex-direction: column;
@@ -254,13 +255,14 @@ body {
   }
   .card {
     cursor: pointer;
-    transition: background-color .5s ease-in-out;
-  }
-  .card:hover .card__content {
-    background-color: var(--blue-hover);
   }
   .card__content {
     gap: 1rem;
+    transition: transform .5s ease-in-out, background-color .5s ease-in-out;
+  }
+  .card:hover .card__content {
+    background-color: var(--blue-hover);
+    transform: translateY(-.65rem);
   }
   .card__icon-circle {
     transform: rotate(0deg);
@@ -268,6 +270,9 @@ body {
   }
   .card__header:hover .card__icon-circle{
     transform: rotate(359deg);
+  }
+  .card__prev{
+    font-size: 0.75rem;
   }
 }
 
@@ -285,6 +290,9 @@ body {
   .main-card__data {
     padding-bottom: 3.5rem;
     padding-top: 1rem;
+  }
+  .main-card {
+    grid-row: 1/span 2;
   }
   .card-container {
     padding: 0 3rem;
