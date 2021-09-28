@@ -2,8 +2,10 @@ import createCard, { createCardData } from "./card.js";
 
 const cardContainer = document.querySelector(".card-container");
 
+const absolutePath = window.location.href
+
 const fetchAllReports = async () => {
-  const response = await fetch("../../src/data/data.json");
+  const response = await fetch(`${absolutePath}src/data/data.json`);
   const reports = await response.json();
   return reports;
 };
