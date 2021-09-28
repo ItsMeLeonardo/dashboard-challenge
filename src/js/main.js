@@ -1,33 +1,60 @@
-import createCard from "./card.js";
+import createCard, { createCardData } from "./card.js";
 
-const cardContainer = document.querySelector('.card-container')
+const cardContainer = document.querySelector(".card-container");
 
-const fetchAllReports = async (typeTime) => {
+const fetchAllReports = async () => {
   const response = await fetch("../../data.json");
-  await response.json().then((r) => {
-    createTotalCards(r, typeTime);
-  });
+  const reports = await response.json();
+  return reports;
 };
 
-const createTotalCards = (reports, typeTime) => {
+const createTotalCards = (typeTime) => {
   const allCards = document.createDocumentFragment();
+  fetchAllReports().then((reports) => {
+    reports.forEach((report) => {
+      const createCardParams = makeCardParams(report, typeTime);
 
-  reports.map((report) => {
-    const { title, timeframes } = report;
-    const { current, previous } = timeframes[typeTime];
-    const createCardParams = {
-      title,
-      typeTime,
-      current,
-      previous,
-    };
-
-    allCards.appendChild(createCard(createCardParams));
+      allCards.appendChild(createCard(createCardParams));
+    });
+    cardContainer.appendChild(allCards);
   });
-  cardContainer.appendChild(allCards)
 };
 
-fetchAllReports("daily");
+const makeCardParams = (report, typeTime) => {
+  const { title, timeframes } = report;
+  const { current, previous } = timeframes[typeTime];
+  return {
+    title,
+    typeTime,
+    current,
+    previous,
+  };
+};
 
-const timeBtn = document.querySelectorAll('.main-card__btn')
+createTotalCards("daily");
 
+const timeBtn = document.querySelectorAll(".main-card__btn");
+
+timeBtn.forEach((btn) => {
+  const classActive = 'main-card__btn--active'
+  
+  btn.addEventListener("click", () => {
+    const typeTime = btn.getAttribute("data-time");
+    updateReports(typeTime)
+
+    timeBtn.forEach(otherBtn => otherBtn.classList.remove(classActive))
+
+    btn.classList.add(classActive)
+  });
+});
+
+const updateReports = (typeTime) => {
+  fetchAllReports().then((report) => {
+    const cardData = document.querySelectorAll(".card__data");
+    report.forEach((report, index) => {
+      const createDataParams = makeCardParams(report, typeTime);
+
+      cardData[index].replaceWith(createCardData(createDataParams));
+    });
+  });
+};

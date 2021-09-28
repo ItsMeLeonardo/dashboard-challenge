@@ -92,4 +92,5 @@ const timeAbbreviation = {
   monthly: "month",
 };
 
-export default createCard;
+export default createCard
+export {createCardData}
